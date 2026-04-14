@@ -1,5 +1,6 @@
+import "./App.css"
 import { useEffect, useState } from "react"
-
+import ThemeSlider from "./components/ThemeSlider"
 const App = () => {
   const [rides, setRides] = useState([])
   const [form, setForm] = useState({
@@ -53,6 +54,8 @@ const App = () => {
   return (
     <div>
       <h1>Theme Park</h1>
+
+      <ThemeSlider />
 
       <form onSubmit={handleSubmit}>
         <input
