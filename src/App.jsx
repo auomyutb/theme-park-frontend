@@ -1,6 +1,5 @@
 import "./App.css"
 import { useEffect, useState } from "react"
-import ThemeSlider from "./components/ThemeSlider"
 const App = () => {
   const [themes, setThemes] = useState([])
 
@@ -13,7 +12,7 @@ const App = () => {
 
 
   const getThemes = async () => {
-    const res = await fetch("http://localhost:3229/themes")
+    const res = await fetch("https://theme-park-3.onrender.com/themes")
     const data = await res.json()
     setThemes(data)
   }
@@ -30,7 +29,7 @@ const App = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    await fetch("http://localhost:3229/themes", {
+    await fetch("https://theme-park-3.onrender.com/themes", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -49,7 +48,7 @@ const App = () => {
   }
 
   const deleteTheme = async (id) => {
-    await fetch(`http://localhost:3229/themes/${id}`, {
+    await fetch(`https://theme-park-3.onrender.com/themes/${id}`, {
       method: "DELETE",
     })
 
