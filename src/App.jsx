@@ -1,64 +1,72 @@
+import "./App.css"
 import { useEffect, useState } from "react"
 
+
 const App = () => {
-  const [rides, setRides] = useState([])
+  const [themes, setThemes] = useState([])
+
   const [form, setForm] = useState({
-    name: "",
+    parkName: "",
     description: "",
-    thrillLevel: ""
+    price: "",
+    picture: ""
   })
 
-  const getRides = async () => {
-    const res = await fetch("http://localhost:3001/rides")
+
+  const getThemes = async () => {
+    const res = await fetch("http://localhost:3229/themes")
     const data = await res.json()
-    setRides(data)
+    setThemes(data)
   }
 
   useEffect(() => {
-    getRides()
+    getThemes()
   }, [])
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value })
+    setForm({ ...form,
+      [e.target.name]: e.target.value })
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    await fetch("http://localhost:3001/rides", {
+    await fetch("http://localhost:3229/themes", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(form)
+      body: JSON.stringify(form),
     })
 
-    getRides()
+    getThemes()
 
     setForm({
-      name: "",
+      parkName: "",
       description: "",
-      thrillLevel: ""
+      price: "",
+      picture:""
     })
   }
 
-  const deleteRide = async (id) => {
-    await fetch(`http://localhost:3001/rides/${id}`, {
-      method: "DELETE"
+  const deleteTheme = async (id) => {
+    await fetch(`http://localhost:3229/themes/${id}`, {
+      method: "DELETE",
     })
 
-    getRides()
+    getThemes()
   }
 
   return (
     <div>
-      <h1>Theme Park</h1>
+      <h1>Theme Park </h1>
+
 
       <form onSubmit={handleSubmit}>
         <input
-          name="name"
-          placeholder="Ride Name"
-          value={form.name}
+          name="parkName"
+          placeholder="Park Name"
+          value={form.parkName}
           onChange={handleChange}
         />
 
@@ -70,26 +78,40 @@ const App = () => {
         />
 
         <input
-          name="thrillLevel"
-          placeholder="Thrill Level"
-          value={form.thrillLevel}
+          name="price"
+          placeholder="Price"
+          value={form.price}
           onChange={handleChange}
         />
 
-        <button type="submit">Add Ride</button>
+        <input
+          name="picture"
+          placeholder="Picture URL"
+          value={form.picture}
+          onChange={handleChange}
+        />
+
+        <button type="submit">Add Theme</button>
       </form>
 
-      {rides.map((ride) => (
-        <div key={ride._id}>
-          <h3>{ride.name}</h3>
-          <p>{ride.description}</p>
-          <p>🔥 {ride.thrillLevel}</p>
+      <div className="theme-container">
+        {themes.map((theme) => (
+          <div className="theme-card" key={theme._id}>
 
-          <button onClick={() => deleteRide(ride._id)}>
-            Delete
-          </button>
-        </div>
-      ))}
+       <img src={theme.picture} alt="theme" />
+
+     <h3>{theme.parkName}</h3>
+
+     <p>{theme.description}</p>
+
+        <p className="price">
+          Price: {theme.price} BHD  </p>
+            <button className="delete-btn"
+              onClick={() => deleteTheme(theme._id)} >Delete</button>
+
+          </div>
+        ))}
+      </div>
     </div>
   )
 }
