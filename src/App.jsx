@@ -1,5 +1,6 @@
 import "./App.css"
 import { useEffect, useState } from "react"
+
 const App = () => {
   const [themes, setThemes] = useState([])
 
@@ -9,7 +10,6 @@ const App = () => {
     price: "",
     picture: ""
   })
-
 
   const getThemes = async () => {
     const res = await fetch("https://theme-park-3.onrender.com/themes")
@@ -22,8 +22,10 @@ const App = () => {
   }, [])
 
   const handleChange = (e) => {
-    setForm({ ...form,
-      [e.target.name]: e.target.value })
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value
+    })
   }
 
   const handleSubmit = async (e) => {
@@ -32,9 +34,9 @@ const App = () => {
     await fetch("https://theme-park-3.onrender.com/themes", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       },
-      body: JSON.stringify(form),
+      body: JSON.stringify(form)
     })
 
     getThemes()
@@ -43,13 +45,13 @@ const App = () => {
       parkName: "",
       description: "",
       price: "",
-      picture:""
+      picture: ""
     })
   }
 
   const deleteTheme = async (id) => {
     await fetch(`https://theme-park-3.onrender.com/themes/${id}`, {
-      method: "DELETE",
+      method: "DELETE"
     })
 
     getThemes()
@@ -57,10 +59,7 @@ const App = () => {
 
   return (
     <div>
-      <h1>Theme Park </h1>
-
-
-      <ThemeSlider />
+      <h1>Theme Park</h1>
 
       <form onSubmit={handleSubmit}>
         <input
@@ -79,6 +78,7 @@ const App = () => {
 
         <input
           name="price"
+          type="number"
           placeholder="Price"
           value={form.price}
           onChange={handleChange}
@@ -97,18 +97,21 @@ const App = () => {
       <div className="theme-container">
         {themes.map((theme) => (
           <div className="theme-card" key={theme._id}>
+            <img src={theme.picture} alt="theme" />
 
-       <img src={theme.picture} alt="theme" />
+            <h3>{theme.parkName}</h3>
+            <p>{theme.description}</p>
 
-     <h3>{theme.parkName}</h3>
+            <p className="price">
+              Price: {theme.price} BHD
+            </p>
 
-     <p>{theme.description}</p>
-
-        <p className="price">
-          Price: {theme.price} BHD  </p>
-            <button className="delete-btn"
-              onClick={() => deleteTheme(theme._id)} >Delete</button>
-
+            <button
+              className="delete-btn"
+              onClick={() => deleteTheme(theme._id)}
+            >
+              Delete
+            </button>
           </div>
         ))}
       </div>
